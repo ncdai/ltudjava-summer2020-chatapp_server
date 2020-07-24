@@ -1,0 +1,10 @@
+- login <username> <password>
+- logout
+
+- message <username> <body>
+- message <#group_key> <body>
+
+- join <#group_key>
+- leave <#group_key>
+
+- quit
