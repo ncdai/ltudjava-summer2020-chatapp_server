@@ -17,7 +17,7 @@ import java.nio.channels.SocketChannel;
 
 class SocketChannelWorker extends Thread {
     private final SocketChannel socketChannel;
-    private String uploadDir;
+    private final String uploadDir;
 
     public SocketChannelWorker(SocketChannel socketChannel, String uploadDir) {
         this.socketChannel = socketChannel;
@@ -48,7 +48,7 @@ class SocketChannelWorker extends Thread {
 
     public static void closeChannel(SocketChannel socketChannel) {
         try {
-            System.out.println(socketChannel.getLocalAddress() + " close connect from " + socketChannel.getRemoteAddress());
+            System.out.println("[Media Server] close connect from " + socketChannel.getRemoteAddress());
             socketChannel.close();
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -78,12 +78,11 @@ public class SocketChannelServer extends Thread {
 
             // noinspection InfiniteLoopStatement
             while (true) {
-                System.out.println("listening on port " + this.port);
+                System.out.println("[Media Server] is listening on port " + this.port);
 
                 SocketChannel socketChannel = serverSocketChannel.accept();
-                System.out.println(socketChannel.getLocalAddress() + " has connect from " + socketChannel.getRemoteAddress());
-
                 new SocketChannelWorker(socketChannel, this.uploadDir).start();
+                System.out.println("[Media Server] has connected from " + socketChannel.getRemoteAddress());
             }
 
         } catch (IOException e) {

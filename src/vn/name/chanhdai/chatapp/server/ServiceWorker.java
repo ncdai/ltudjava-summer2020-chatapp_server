@@ -4,10 +4,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
  * vn.name.chanhdai.chatapp.server
@@ -19,6 +17,7 @@ import java.util.Map;
 public class ServiceWorker extends Thread {
     private final Server server;
     private final Socket clientSocket;
+    private final String logPrefix;
 
     private String user = null;
     private final HashSet<String> groupSet = new HashSet<>();
@@ -26,11 +25,11 @@ public class ServiceWorker extends Thread {
     InputStream inputStream;
     OutputStream outputStream;
 
-    private final Map<String, String> userList = new HashMap<>();
-
     public ServiceWorker(Server server, Socket clientSocket) {
         this.server = server;
         this.clientSocket = clientSocket;
+
+        this.logPrefix = "[Chat Server Thread @" + getName() + "] ";
     }
 
     public String getUser() {
@@ -62,7 +61,7 @@ public class ServiceWorker extends Thread {
             username.equals("guest") && password.equals("guest") ||
                 username.equals("ncdai") && password.equals("ncdai") ||
                 username.equals("nttam") && password.equals("nttam") ||
-                (userList.get(username) != null && userList.get(username).equals(password))
+                server.getUser(username, password) != null
         ) {
             this.send("login ok\n");
             this.user = username;
@@ -83,12 +82,12 @@ public class ServiceWorker extends Thread {
                 }
             }
 
-            System.out.println("[" + username + "]" + " Dang nhap thanh cong!");
+            System.out.println(logPrefix + username + " dang nhap thanh cong!");
             return;
         }
 
         this.send("login failed\n");
-        System.out.println("[" + username + "]" + " Dang nhap that bai!");
+        System.out.println(logPrefix + username + " dang nhap that bai!");
     }
 
     private void handleRegister(String[] tokens) {
@@ -99,8 +98,7 @@ public class ServiceWorker extends Thread {
         String username = tokens[1];
         String password = tokens[2];
 
-        if (this.userList.get(username) == null) {
-            this.userList.put(username, password);
+        if (server.addUser(username, password)) {
             this.send("register ok\n");
             return;
         }
@@ -124,10 +122,10 @@ public class ServiceWorker extends Thread {
                     }
                 }
 
-                System.out.println("[" + this.user + "]" + " Dang xuat thanh cong!");
+                System.out.println(logPrefix + this.user + " dang xuat thanh cong!");
             }
 
-            System.out.println(clientSocket.getPort() + " ngat ket noi!");
+            System.out.println(logPrefix + clientSocket.getPort() + " ngat ket noi!");
             this.clientSocket.close();
 
         } catch (IOException ioException) {
@@ -184,6 +182,7 @@ public class ServiceWorker extends Thread {
 
         String groupKey = tokens[1];
         this.groupSet.add(groupKey);
+        this.send("join " + groupKey + " ok\n");
     }
 
     // command : leave <#group_key>
@@ -194,6 +193,7 @@ public class ServiceWorker extends Thread {
 
         String groupKey = tokens[1];
         this.groupSet.remove(groupKey);
+        this.send("leave " + groupKey + " ok\n");
     }
 
     @Override
@@ -249,7 +249,7 @@ public class ServiceWorker extends Thread {
                 }
             }
         } catch (IOException ioException) {
-            System.err.println("ServiceWorker.java -> run() -> IOException");
+            System.err.println(logPrefix + "ServiceWorker.java -> run() -> IOException");
             ioException.printStackTrace();
         }
     }

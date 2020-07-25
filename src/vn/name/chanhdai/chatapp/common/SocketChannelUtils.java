@@ -58,7 +58,7 @@ public class SocketChannelUtils {
             socketChannel.write(getByteBufferFromString("send"));
             socketChannel.write(getByteBufferFromString(fileToSend.getName()));
 
-            System.out.println(socketChannel.getLocalAddress() + " begin write data to " + socketChannel.getRemoteAddress());
+            System.out.println("[Media Server] begin write data to " + socketChannel.getRemoteAddress());
 
             while (fileChannel.read(byteBuffer) > 0) {
                 byteBuffer.flip();
@@ -66,7 +66,7 @@ public class SocketChannelUtils {
                 byteBuffer.clear();
             }
 
-            System.out.println(socketChannel.getLocalAddress() + " end write data to " + socketChannel.getRemoteAddress());
+            System.out.println("[Media Server] end write data to " + socketChannel.getRemoteAddress());
 
             fileChannel.close();
             randomAccessFile.close();
@@ -74,7 +74,7 @@ public class SocketChannelUtils {
             return true;
         } catch (FileNotFoundException foundException) {
             try {
-                System.err.println(socketChannel.getLocalAddress() + " file not found " + filePathToSend);
+                System.err.println("[Media Server] file not found " + filePathToSend);
                 socketChannel.write(getByteBufferFromString("file_not_found"));
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -97,7 +97,7 @@ public class SocketChannelUtils {
             FileChannel fileChannel = randomAccessFile.getChannel();
             ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
 
-            System.out.println(socketChannel.getLocalAddress() + " begin read data from " + socketChannel.getRemoteAddress());
+            System.out.println("[Media Server] begin read data from " + socketChannel.getRemoteAddress());
 
             while (socketChannel.read(byteBuffer) > 0) {
                 byteBuffer.flip();
@@ -105,7 +105,7 @@ public class SocketChannelUtils {
                 byteBuffer.clear();
             }
 
-            System.out.println(socketChannel.getLocalAddress() + " end read data from " + socketChannel.getRemoteAddress());
+            System.out.println("[Media Server] end read data from " + socketChannel.getRemoteAddress());
 
             fileChannel.close();
             randomAccessFile.close();
@@ -145,7 +145,7 @@ public class SocketChannelUtils {
 
     public static void closeChannel(SocketChannel socketChannel) {
         try {
-            System.out.println(socketChannel.getLocalAddress() + " close connect from " + socketChannel.getRemoteAddress());
+            System.out.println("[Media Server] close connect from " + socketChannel.getRemoteAddress());
             socketChannel.close();
         } catch (IOException ioException) {
             ioException.printStackTrace();

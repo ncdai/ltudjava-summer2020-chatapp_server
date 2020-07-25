@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * vn.name.chanhdai.chatapp.server
@@ -16,6 +18,8 @@ import java.util.List;
 public class Server extends Thread {
     private final int port;
     private final List<ServiceWorker> serviceWorkerList = new ArrayList<>();
+
+    private final Map<String, String> userList = new HashMap<>();
 
     public Server(int port) {
         this.port = port;
@@ -29,6 +33,24 @@ public class Server extends Thread {
         this.serviceWorkerList.remove(serviceWorker);
     }
 
+    public boolean addUser(String username, String password) {
+        if (this.userList.get(username) == null) {
+            this.userList.put(username, password);
+            return true;
+        }
+
+        return false;
+    }
+
+    public String getUser(String username, String password) {
+        String user = userList.get(username);
+        if (user != null && user.equals(password)) {
+            return user;
+        }
+
+        return null;
+    }
+
     @Override
     public void run() {
         try {
@@ -36,9 +58,9 @@ public class Server extends Thread {
 
             // noinspection InfiniteLoopStatement
             while (true) {
-                System.out.println("Dang doi ket noi!");
+                System.out.println("[Chat Server] is listening on port " + this.port);
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Co ket noi! " + clientSocket.getPort());
+                System.out.println("[Chat Server] has connected from port " + clientSocket.getPort());
 
                 ServiceWorker serviceWorker = new ServiceWorker(this, clientSocket);
                 this.serviceWorkerList.add(serviceWorker);
