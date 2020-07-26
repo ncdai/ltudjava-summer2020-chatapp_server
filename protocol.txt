@@ -1,0 +1,13 @@
+- login <username> <password>
+- logout
+
+- message <username> <body>
+- message <#group_key> <body>
+
+Example
+- message ncdai text=hello world
+- message ncdai file=some-file.png
+- message #react emoji=anxious-face-with-sweat
+
+- join <#group_key>
+- leave <#group_key>

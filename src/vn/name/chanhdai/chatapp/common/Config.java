@@ -11,5 +11,5 @@ public class Config {
     public static final int CHAT_SERVER_PORT = 8000;
 
     public static final int MEDIA_SERVER_PORT = 9000;
-    public static final String MEDIA_SERVER_UPLOAD_DIR = "/Users/ncdai3651408/IdeaProjects/chatapp_server/uploads/";
+    public static final String MEDIA_SERVER_UPLOAD_DIR = "uploads/";
 }

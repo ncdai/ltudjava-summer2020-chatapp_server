@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="chatapp_server:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/chatapp_server_jar</output-path>
+    <root id="archive" name="chatapp_server.jar">
+      <element id="module-output" name="chatapp_server" />
+      <element id="extracted-dir" path="$USER_HOME$/Workplace/_java_libs/commons-lang3-3.11.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
