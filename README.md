@@ -1,7 +1,7 @@
 # DaiChat App (Server)
 
 ## Demo
-[https://youtu.be/RmokXRkJhHQ](https://youtu.be/RmokXRkJhHQ)
+[https://youtu.be/H5U3J_W1low](https://youtu.be/H5U3J_W1low)
 
 ## Tech
 - Java Networking
@@ -18,4 +18,5 @@
 - Send File (recipient can download and view the file)
 - Change Password
 
-> Made by 18120113 - Nguyễn Chánh Đại
+---
+Sponsored by [1Password for Open Source Projects](https://github.com/1Password/1password-teams-open-source)
