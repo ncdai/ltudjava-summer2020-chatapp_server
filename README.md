@@ -1,7 +1,8 @@
 # DaiChat App (Server)
 
-## Demo
-[https://youtu.be/H5U3J_W1low](https://youtu.be/H5U3J_W1low)
+- Demo: https://youtu.be/H5U3J_W1low
+- Java Application Programming - FIT@HCMUS
+- Project Score: 10/10
 
 ## Tech
 - Java Networking
